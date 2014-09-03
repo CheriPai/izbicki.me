@@ -1,4 +1,10 @@
+----
+title: Main title
+author: <a href="//github.com/cheripai">Dat Do</a>
+----
+
 It is known that C++ is an ideal language for reaching optimal runtime efficiency, which is why so many processor intensive applications are written in the language. On the other hand, Haskell is known for creating bug-free, compact, and readable programs without sacrificing too much performance. Therefore, it would be interesting to see if Haskell is capable of beating C++ in terms of runtime speed.
+
 To test the runtime performance between the two languages, we will be inserting a list of 713,000 strings from a file into an AVL Tree, which is a $O(n \log n)$ operation. The C++ AVL tree was created in a data structures course that I took recently and the Haskell AVL tree is from the Haskell library Data.Tree.AVL [(View my source code)](https://github.com/CheriPai/AVLComparison). Additionally, the Haskell AVL tree will be using ByteStrings because they are much more efficient than the notoriously slow String. To see how the runtime is affected by files of different sizes, the file will be partitioned into 10 segments. The first segment will have 71,300 words, the second will have 71,300 * 2 words, and so on. Both the C++ and Haskell tests will be performed with the -O2 compile flag for optimization with each test being the average of 3 separate runs. Let’s take a look at the results.
 
 ![C++vHaskell](/img/CvsH.png)
@@ -42,5 +48,6 @@ Here is a graph showing the runtime of the operation on the largest set (713,000
 ![HaskellParallelization](/img/HParallelism.png)
 
 Taking a look at the results, we can see that the improvement in runtime does not fit the 100% parallelized theoretical model, but does follow it to some extent. Rather than the 2 core runtime being 50% of the 1 core runtime, the 2 core runtime is 55% of the 1 core runtime, with decreasing efficiency as the number of cores increases. Though, it is clear that there are significant improvements in speed through the use of more processor cores and that parallelism is an easy way to get better runtime speeds with little effort. 
+
 During this test, we can see that non-parallelized Haskell is slower than C++. However, through little effort, the runtime of Haskell can be dramatically improved through the use of parallelism. It is clear from Amdahl’s law and through our comparison of runtime speeds on an increasing number of cores that the runtime of Haskell can be improved by using a greater number of threads. Knowing this, perhaps C++ isn’t always the best choice for heavy computation.
 
