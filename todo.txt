@@ -1,0 +1,13 @@
+add labels  for axes
+make scale for graphs the same
+make axes the box for the graph
+change color of last graph so real is orange and theoretical is different (stripes)
+make pictures 700px wide and shorter
+
+get right into the post with the second paragraph
+add first sentence to second paragraph
+let's compare avl trees in haskell and c++
+
+
+picture for parallelism
+show difference in code
