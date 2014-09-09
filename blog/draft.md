@@ -1,11 +1,10 @@
 ----
-title: Main title
+title: Comparing AVL Trees in C++ and Haskell
 author: <a href="//github.com/cheripai">Dat Do</a>
 ----
 
-It would be interesting to see if Haskell is capable of beating C++ in terms of runtime speed.
-
-To test the runtime performance between the two languages, we will be inserting a list of 713,000 strings from a file into an AVL Tree, which is a $O(n \log n)$ operation. The C++ AVL tree was created in a data structures course that I took recently and the Haskell AVL tree is from the Haskell library [`Data.Tree.AVL`](http://hackage.haskell.org/package/AvlTree-4.2/docs/Data-Tree-AVL.html). Additionally, the Haskell AVL tree will be using `ByteString` because they are much more efficient than the notoriously slow `String`. To see how the runtime is affected by files of different sizes, the file will be partitioned into 10 segments. The first segment will have 71,300 words, the second will have 71,300 * 2 words, and so on. Both the C++ and Haskell tests will be performed with the `-O2` compile flag for optimization with each test being the average of 3 separate runs. You reproduce the tests by viewing the [source code](https://github.com/CheriPai/AVLComparison). Let’s take a look at the results.
+It would be interesting to see if Haskell is capable of beating C++ in terms of runtime speed, so let’s compare AVL trees in the two languages.
+To test the runtime performance between C++ and Haskell, we will be inserting a list of 713,000 strings from a file into an AVL Tree, which is a $O(n \log n)$ operation. The C++ AVL tree was created in a data structures course that I took recently and the Haskell AVL tree is from the Haskell library [`Data.Tree.AVL`](http://hackage.haskell.org/package/AvlTree-4.2/docs/Data-Tree-AVL.html). Additionally, the Haskell AVL tree will be using `ByteString` because they are much more efficient than the notoriously slow `String`. To see how the runtime is affected by files of different sizes, the file will be partitioned into 10 segments. The first segment will have 71,300 words, the second will have 71,300 * 2 words, and so on. Both the C++ and Haskell tests will be performed with the `-O2` compile flag for optimization with each test being the average of 3 separate runs. You reproduce the tests by viewing the [source code](https://github.com/CheriPai/AVLComparison). Let’s take a look at the results.
 
 ![C++vHaskell](/img/CvsH.png)
 
