@@ -22,7 +22,7 @@ Here's the results:
 ![C++vHaskell](/img/CvsH.png)
 
 
-C++ is about 25% faster than Haskell on this test.
+C++ is about 60% faster than Haskell on the last partition for this test.
 I guess this is because Haskell operates on immutable data.
 Every time a new element is to be inserted into the Haskell AVL tree, new parent nodes must be created because the old parent nodes cannot be changed.
 This creates quite a bit of overhead.
@@ -31,7 +31,7 @@ This is faster than making a whole new copy like the Haskell code does.
 
 *Is there an easy way to speed up our Haskell code?*
 
-There is a Haskell library called [`monad-par`](https://hackage.haskell.org/package/monad-par) that makes parallel computations really convenient.
+There is a Haskell library called [`parallel`](http://hackage.haskell.org/package/parallel-2.2.0.1/docs/Control-Parallel.html) that makes parallel computations really convenient.
 We'll try to speed up our program with this library.
 
 You might think that it is unfair to compare multithreaded Haskell against C++ that is not multithreaded.
@@ -39,22 +39,15 @@ And you're absolutely right!
 But let’s be honest, manually working with [`pthreads`](http://linux.die.net/man/7/pthreads) in C++ is quite the headache, but parallism in Haskell is super easy.
 
 Here’s a snippet of how parallelized code works running on two threads.
-[FIXME: add a brief explanation]
+What we do is create two trees each with half of the set of strings. Then, we call `par` on the two trees so that the code is parallelized. Afterwards, we union the two trees to make them a single tree. Finally, we call `deepseq` so that the code is evaluated.
 
 ```
-runParIO $ do
-    t1 <- spawn (return $ load empty $ l !! 0)
-    t2 <- spawn (return $ load empty $ l !! 1)
-    t3 <- spawn (return $ load empty $ l !! 2)
-    t4 <- spawn (return $ load empty $ l !! 3)
-    t1' <- get t1
-    t2' <- get t2
-    t3' <- get t3
-    t4' <- get t4
-    let b' = union fstCC t1' t2'
-    let t' = union fstCC t3' t4'
-    let bt = union fstCC b' t'
-    return ()
+main = do
+    let t1 = load empty $ l !! 0
+    let t2 = load empty $ l !! 1
+    let p = par t1 t2
+    let bt = union fstCC t1 t2
+    deepseq p $ deepseq bt $ return ()
 ```
 
 Great, so now that the Haskell code has been parallelized, we can compile and run the program again to see the difference. To compile for parallelism, we must use some special flags.
@@ -82,4 +75,4 @@ Here is a graph showing the runtime of the operation on the largest set (713,000
 
 ![HaskellParallelization](/img/HParallelism.png)
 
-Taking a look at the results, we can see that the improvement in runtime does not fit the 100% parallelized theoretical model, but does follow it to some extent. Rather than the 2 core runtime being 50% of the 1 core runtime, the 2 core runtime is 55% of the 1 core runtime, with decreasing efficiency as the number of cores increases. Though, it is clear that there are significant improvements in speed through the use of more processor cores and that parallelism is an easy way to get better runtime speeds with little effort.
+Taking a look at the results, we can see that the improvement in runtime does not fit the 100% parallelized theoretical model, but does follow it to some extent. Rather than the 2 core runtime being 50% of the 1 core runtime, the 2 core runtime is 56% of the 1 core runtime, with decreasing efficiency as the number of cores increases. Though, it is clear that there are significant improvements in speed through the use of more processor cores and that parallelism is an easy way to get better runtime speeds with little effort.
