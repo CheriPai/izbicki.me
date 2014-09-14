@@ -56,10 +56,10 @@ Great, so now that the Haskell code has been parallelized, we can compile and ru
 ghc –O2 filename -rtsopts –threaded
 ```
 
-And to run the program (N4 means to run the program on 4 cores).
+And to run the program (X refers to the number of cores).
 
 ```
-./filename +RTS –N4
+./filename +RTS –NX
 ```
 
 ![C++vHaskell4](/img/CvsH4.png)
